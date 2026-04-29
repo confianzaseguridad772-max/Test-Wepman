@@ -3,78 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test de Wepman Virtual</title>
+    <title>Test de Wepman Virtual - Profesional</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 35px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; text-align: center; margin-bottom: 30px; border-bottom: 2px solid #27ae60; padding-bottom: 10px; }
+        :root { --primary: #2c3e50; --secondary: #27ae60; --accent: #ffc107; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); padding: 20px; color: #333; line-height: 1.6; }
+        .container { max-width: 850px; margin: auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
         
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; background: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #eee; }
-        .info-grid label { font-weight: bold; display: block; margin-bottom: 8px; color: #555; }
-        input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid var(--secondary); padding-bottom: 15px; }
+        h1 { color: var(--primary); margin: 0; font-size: 1.8rem; }
         
-        .consigna { background: #fff8e1; border-left: 5px solid #ffc107; padding: 15px; margin-bottom: 25px; font-style: italic; border-radius: 4px; }
+        .patient-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; background: #fdfdfd; padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #eaeaea; }
+        .field label { font-weight: 700; display: block; margin-bottom: 8px; color: var(--primary); font-size: 0.9rem; }
+        input[type="text"], select { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; box-sizing: border-box; }
+        input:focus { border-color: var(--secondary); outline: none; }
         
-        .test-header { display: flex; font-weight: bold; background: #2c3e50; color: white; padding: 12px; border-radius: 5px 5px 0 0; margin-top: 20px; }
-        .col-word { flex: 2; }
-        .col-opt { flex: 1; text-align: center; }
+        .instruction-box { background: #fffde7; border-left: 6px solid var(--accent); padding: 20px; margin-bottom: 30px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        
+        .test-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .table-head { background: var(--primary); color: white; }
+        .table-head th { padding: 15px; text-align: left; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+        
+        .test-row { border-bottom: 1px solid #f0f0f0; transition: background 0.2s; }
+        .test-row:hover { background-color: #f9f9f9; }
+        .word-cell { padding: 15px; font-weight: 600; font-size: 1.1rem; color: #444; width: 60%; }
+        .option-cell { padding: 15px; text-align: center; width: 40%; }
+        
+        .radio-group { display: flex; justify-content: space-around; align-items: center; }
+        .radio-group label { cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 500; padding: 5px 10px; border-radius: 5px; }
+        .radio-group label:hover { background: #eee; }
+        input[type="radio"] { transform: scale(1.3); cursor: pointer; }
 
-        .item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; transition: background 0.2s; }
-        .item:hover { background-color: #f1f8ff; }
-        .item-word { flex: 2; font-weight: 600; font-size: 1.05em; }
-        .item-options { flex: 1; display: flex; justify-content: space-around; }
+        .submit-area { margin-top: 40px; text-align: center; }
+        .btn-send { background: var(--secondary); color: white; padding: 20px 40px; border: none; border-radius: 10px; font-size: 1.3rem; font-weight: 700; cursor: pointer; width: 100%; transition: all 0.3s; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4); }
+        .btn-send:hover { background: #219150; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(39, 174, 96, 0.5); }
         
-        .btn-submit { display: block; width: 100%; padding: 20px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-size: 1.25em; font-weight: bold; cursor: pointer; margin-top: 40px; box-shadow: 0 4px 6px rgba(39, 174, 96, 0.3); }
-        .btn-submit:hover { background-color: #219150; transform: translateY(-1px); }
-        
-        .footer-note { text-align: center; font-size: 0.85em; color: #888; margin-top: 20px; }
+        footer { margin-top: 30px; text-align: center; font-size: 0.9rem; color: #7f8c8d; border-top: 1px solid #eee; padding-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Test de Discriminación Auditiva (Wepman)</h1>
+    <header>
+        <h1>Test de Discriminación Auditiva de Wepman</h1>
+    </header>
     
-    <div class="info-grid">
-        <div>
-            <label>DNI del Niño:</label>
-            <input type="text" id="dni" placeholder="Ej. 44021545" required>
+    <div class="patient-info">
+        <div class="field">
+            <label>DNI del Evaluado:</label>
+            <input type="text" id="dni" placeholder="Ingrese DNI">
         </div>
-        <div>
-            <label>Nombre del Niño:</label>
-            <input type="text" id="nombre" placeholder="Nombre completo" required>
+        <div class="field">
+            <label>Nombre Completo:</label>
+            <input type="text" id="nombre" placeholder="Nombre y Apellidos">
         </div>
-        <div>
+        <div class="field">
             <label>Edad Cronológica:</label>
             <select id="edad_cron">
                 <option value="3">3 años</option>
                 <option value="4">4 años</option>
                 <option value="5">5 años</option>
+                <option value="6">6 años</option>
             </select>
         </div>
     </div>
 
-    <div class="consigna">
-        <strong>Consigna:</strong> "Te voy a leer algunas palabras y tú me dirás si las oyes igual o diferente."
+    <div class="instruction-box">
+        <strong>Consigna para el niño:</strong> "Te voy a leer algunas palabras y tú me dirás si las oyes igual o diferente."
     </div>
 
-    <div class="test-header">
-        <div class="col-word">Par de Palabras</div>
-        <div class="col-opt">Respuesta del Niño</div>
-    </div>
-    
-    <div id="contenedor-test">
-        <!-- Las palabras se cargarán aquí automáticamente -->
-    </div>
+    <table class="test-table">
+        <thead class="table-head">
+            <tr>
+                <th>Par de Palabras a Evaluar</th>
+                <th style="text-align: center;">Respuesta</th>
+            </tr>
+        </thead>
+        <tbody id="test-body">
+            <!-- Se generará por JavaScript de forma inmediata -->
+        </tbody>
+    </table>
 
-    <button class="btn-submit" onclick="enviarResultados()">Finalizar y Registrar en Excel</button>
+    <div class="submit-area">
+        <button class="btn-send" onclick="procesarYEnviar()">Finalizar y Guardar en Excel</button>
+    </div>
     
-    <p class="footer-note">Asegúrese de que el niño no vea su boca durante la prueba.</p>
+    <footer>
+        <p>⚠️ Recuerde: El evaluado debe estar de espaldas o con la vista cubierta para evitar lectura labial.</p>
+    </footer>
 </div>
 
 <script>
-// Lista de los 40 ítems oficiales del PDF[cite: 1]
-const itemsWepman = [
+// Base de datos oficial del Test de Wepman
+const bancoPalabras = [
     ["SOBA", "SOGA"], ["LANA", "LANA"], ["DEDO", "DEBO"], ["RUEGA", "RUEDA"], ["CHAL", "CHAL"],
     ["GUÍA", "DÍA"], ["BOL", "GOL"], ["SIN", "FIN"], ["PERRO", "BERRO"], ["SACO", "SACO"],
     ["ZONA", "ZONA"], ["JARRO", "JARRO"], ["CASA", "GASA"], ["ECO", "ECO"], ["BRAMA", "TRAMA"],
@@ -85,67 +105,69 @@ const itemsWepman = [
     ["ARCÓN", "HALCÓN"], ["PLAN", "FLAN"], ["FLOR", "FLOR"], ["ROPA", "ROBA"], ["CRIO", "TRIO"]
 ];
 
-const contenedor = document.getElementById('contenedor-test');
+const tbody = document.getElementById('test-body');
 
-// Función para cargar la lista apenas abra la página
-window.onload = function() {
-    itemsWepman.forEach((par, i) => {
-        const sonIguales = (par[0] === par[1]);
-        contenedor.innerHTML += `
-            <div class="item">
-                <div class="item-word">${i + 1}. ${par[0]} - ${par[1]}</div>
-                <div class="item-options">
-                    <label><input type="radio" name="p${i}" value="${sonIguales ? '1' : '0'}"> Igual</label>
-                    <label><input type="radio" name="p${i}" value="${!sonIguales ? '1' : '0'}"> Diferente</label>
-                </div>
+// Generar las filas inmediatamente al cargar el script
+bancoPalabras.forEach((par, i) => {
+    const sonIgualesReal = (par[0] === par[1]);[cite: 1]
+    const row = document.createElement('tr');
+    row.className = 'test-row';
+    row.innerHTML = `
+        <td class="word-cell">${i + 1}. ${par[0]} - ${par[1]}</td>
+        <td class="option-cell">
+            <div class="radio-group">
+                <label><input type="radio" name="p${i}" value="${sonIgualesReal ? '1' : '0'}"> Igual</label>
+                <label><input type="radio" name="p${i}" value="${!sonIgualesReal ? '1' : '0'}"> Diferente</label>
             </div>
-        `;
-    });
-};
+        </td>
+    `;
+    tbody.appendChild(row);
+});
 
-function enviarResultados() {
+function procesarYEnviar() {
     let aciertos = 0;
-    const total = 40;[cite: 1]
+    const totalItems = 40;[cite: 1]
 
-    for (let i = 0; i < total; i++) {
-        const seleccion = document.querySelector(`input[name="p${i}"]:checked`);
-        if (seleccion && seleccion.value === "1") aciertos++;
+    for (let i = 0; i < totalItems; i++) {
+        const rbc = document.querySelector(`input[name="p${i}"]:checked`);
+        if (rbc && rbc.value === "1") aciertos++;
     }
 
-    const porcentaje = (aciertos / total) * 100;[cite: 1]
+    const porc = (aciertos / totalItems) * 100;[cite: 1]
     
-    // Tabla de valoración del PDF[cite: 1]
-    let edadCorr = "Menor a 3.0 años";
-    if (porcentaje >= 91) edadCorr = "5.7 - 6.0 años";
-    else if (porcentaje >= 81) edadCorr = "5.1 - 5.6 años";
-    else if (porcentaje >= 71) edadCorr = "4.7 - 5.0 años";
-    else if (porcentaje >= 61) edadCorr = "4.1 - 4.6 años";
-    else if (porcentaje >= 51) edadCorr = "3.7 - 4.0 años";
-    else if (porcentaje >= 41) edadCorr = "3.0 - 3.6 años";
+    // Escala de valoración normativa
+    let interpretacion = "Desarrollo insuficiente";
+    if (porc >= 91) interpretacion = "5.7 - 6.0 años";
+    else if (porc >= 81) interpretacion = "5.1 - 5.6 años";
+    else if (porc >= 71) interpretacion = "4.7 - 5.0 años";
+    else if (porc >= 61) interpretacion = "4.1 - 4.6 años";
+    else if (porc >= 51) interpretacion = "3.7 - 4.0 años";
+    else if (porc >= 41) interpretacion = "3.0 - 3.6 años";
 
-    const payload = {
+    const datos = {
         dni: document.getElementById('dni').value,
         nombre: document.getElementById('nombre').value,
         edad_cron: document.getElementById('edad_cron').value,
-        porcentaje: porcentaje.toFixed(1),
-        edad_corr: edadCorr
+        porcentaje: porc.toFixed(1) + "%",
+        edad_corr: interpretacion
     };
 
-    if (!payload.dni || !payload.nombre) {
-        alert("Por favor, complete los datos de identificación del niño.");
+    if (!datos.dni || !datos.nombre) {
+        alert("Por favor, complete los datos del niño antes de finalizar.");
         return;
     }
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyAZPuQ8QxLtXAtGpF4hvWEuKrlCFWxgls8dC5VhSVAB31uINSJVknPD2ujWkVAxBauEQ/exec';
+    // URL de tu Google Apps Script
+    const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbyAZPuQ8QxLtXAtGpF4hvWEuKrlCFWxgls8dC5VhSVAB31uINSJVknPD2ujWkVAxBauEQ/exec';
 
-    fetch(scriptURL, {
+    fetch(URL_SCRIPT, {
         method: 'POST',
         mode: 'no-cors',
-        body: new URLSearchParams(payload)
+        body: new URLSearchParams(datos)
     }).then(() => {
-        alert("Test registrado con éxito.\nPorcentaje: " + porcentaje + "%\nEdad de desarrollo: " + edadCorr);
+        alert("✅ Registro guardado correctamente.\n\nAciertos: " + aciertos + "/40\nPorcentaje: " + datos.porcentaje + "\nEdad de desarrollo: " + interpretacion);
         location.reload();
-    }).catch(e => alert("Error al enviar: " + e));
+    }).catch(err => alert("Error al conectar con Excel: " + err));
 }
 </script>
 
