@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test de Wepman Virtual</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; line-height: 1.6; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1, h2 { color: #2c3e50; text-align: center; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
+        .container { max-width: 850px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; }
         .info-section { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; background: #eef2f7; padding: 20px; border-radius: 8px; }
-        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; transition: background 0.2s; }
-        .item:hover { background-color: #f9f9f9; }
-        .words { font-weight: bold; font-size: 1.1em; color: #444; flex: 1; }
+        .consigna { font-style: italic; background: #fff3cd; padding: 15px; border-left: 5px solid #ffcc00; margin-bottom: 20px; border-radius: 4px; }
+        .test-grid { margin-top: 20px; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+        .item:nth-child(even) { background-color: #fafafa; }
+        .words { font-weight: bold; flex: 1; color: #333; }
         .options { flex: 1; text-align: right; }
-        .btn-submit { display: block; width: 100%; padding: 15px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; margin-top: 30px; }
+        .btn-submit { display: block; width: 100%; padding: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; margin-top: 30px; font-weight: bold; }
         .btn-submit:hover { background-color: #219150; }
-        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 90%; }
-        .consigna { font-style: italic; background: #fff3cd; padding: 10px; border-left: 5px solid #ffecb5; margin-bottom: 20px; }
+        input[type="text"], select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 90%; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -26,15 +28,15 @@
     
     <div class="info-section">
         <div>
-            <label>DNI del Niño:</label><br>
-            <input type="text" id="dni" required>
+            <label>DNI del Niño:</label>
+            <input type="text" id="dni" placeholder="Ingrese DNI" required>
         </div>
         <div>
-            <label>Nombre del Niño:</label><br>
-            <input type="text" id="nombre" required>
+            <label>Nombre del Niño:</label>
+            <input type="text" id="nombre" placeholder="Nombre completo" required>
         </div>
         <div>
-            <label>Edad Cronológica:</label><br>
+            <label>Edad Cronológica:</label>
             <select id="edad_cron">
                 <option value="3">3 años</option>
                 <option value="4">4 años</option>
@@ -47,15 +49,15 @@
         <strong>Consigna:</strong> "Te voy a leer algunas palabras y tú me dirás si las oyes igual o diferente."
     </div>
 
-    <div id="test-content">
-        <!-- Generado por JS -->
+    <div class="test-grid" id="test-list">
+        <!-- Las palabras se insertan aquí mediante JavaScript para asegurar que coincidan con el PDF -->
     </div>
 
     <button class="btn-submit" onclick="enviarDatos()">Finalizar y Enviar a Google Sheets</button>
 </div>
 
 <script>
-// Listado oficial del PDF
+// Listado oficial de 40 ítems del PDF
 const pares = [
     ["SOBA", "SOGA"], ["LANA", "LANA"], ["DEDO", "DEBO"], ["RUEGA", "RUEDA"], ["CHAL", "CHAL"],
     ["GUÍA", "DÍA"], ["BOL", "GOL"], ["SIN", "FIN"], ["PERRO", "BERRO"], ["SACO", "SACO"],
@@ -67,24 +69,28 @@ const pares = [
     ["ARCÓN", "HALCÓN"], ["PLAN", "FLAN"], ["FLOR", "FLOR"], ["ROPA", "ROBA"], ["CRIO", "TRIO"]
 ];
 
-const testContainer = document.getElementById('test-content');
+const listContainer = document.getElementById('test-list');
 
-// Crear los 40 campos
+// Generar visualmente cada fila
 pares.forEach((par, i) => {
-    const esIgualReal = par[0] === par[1];
-    testContainer.innerHTML += `
+    const esIgual = par[0] === par[1]; // Determina si la respuesta correcta es "Igual" o "Diferente"
+    listContainer.innerHTML += `
         <div class="item">
             <span class="words">${i + 1}. ${par[0]} - ${par[1]}</span>
             <div class="options">
-                <label><input type="radio" name="r${i}" value="${esIgualReal ? '1' : '0'}"> Igual</label>
-                <label><input type="radio" name="r${i}" value="${!esIgualReal ? '1' : '0'}"> Diferente</label>
+                <label style="display:inline; margin-right:10px;">
+                    <input type="radio" name="r${i}" value="${esIgual ? '1' : '0'}"> Igual
+                </label>
+                <label style="display:inline;">
+                    <input type="radio" name="r${i}" value="${!esIgual ? '1' : '0'}"> Diferente
+                </label>
             </div>
         </div>
     `;
 });
 
-function obtenerEdadCorrespondiente(p) {
-    // Escala basada en la tabla del protocolo[cite: 1]
+function calcularEdadCorr(p) {
+    // Escala de valoración del PDF
     if (p >= 91) return "5.7 - 6.0 años";
     if (p >= 81) return "5.1 - 5.6 años";
     if (p >= 71) return "4.7 - 5.0 años";
@@ -96,17 +102,17 @@ function obtenerEdadCorrespondiente(p) {
 
 function enviarDatos() {
     let aciertos = 0;
-    const totalItems = 40;
+    const total = 40;[cite: 1]
 
-    for (let i = 0; i < totalItems; i++) {
-        const check = document.querySelector(`input[name="r${i}"]:checked`);
-        if (check && check.value === "1") aciertos++;
+    for (let i = 0; i < total; i++) {
+        const r = document.querySelector(`input[name="r${i}"]:checked`);
+        if (r && r.value === "1") aciertos++;
     }
 
-    const porcentaje = (aciertos / totalItems) * 100;[cite: 1]
-    const edadCorr = obtenerEdadCorrespondiente(porcentaje);
+    const porcentaje = (aciertos / total) * 100;[cite: 1]
+    const edadCorr = calcularEdadCorr(porcentaje);
     
-    const payload = {
+    const datos = {
         dni: document.getElementById('dni').value,
         nombre: document.getElementById('nombre').value,
         edad_cron: document.getElementById('edad_cron').value,
@@ -114,25 +120,25 @@ function enviarDatos() {
         edad_corr: edadCorr
     };
 
-    if (!payload.dni || !payload.nombre) {
-        alert("Por favor, completa los datos del niño.");
+    if (!datos.dni || !datos.nombre) {
+        alert("Por favor, rellene los datos de identificación.");
         return;
     }
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyAZPuQ8QxLtXAtGpF4hvWEuKrlCFWxgls8dC5VhSVAB31uINSJVknPD2ujWkVAxBauEQ/exec';
+    // Tu enlace de Google Apps Script
+    const URL = "https://script.google.com/macros/s/AKfycbyAZPuQ8QxLtXAtGpF4hvWEuKrlCFWxgls8dC5VhSVAB31uINSJVknPD2ujWkVAxBauEQ/exec";
 
-    fetch(scriptURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(payload)
-    })
-    .then(() => {
-        alert(`¡Test Enviado!\nResultado: ${porcentaje}%\nEdad Correspondiente: ${edadCorr}`);
+    fetch(URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(datos)
+    }).then(() => {
+        alert(`¡Registro exitoso!\nAciertos: ${aciertos}/40\nPorcentaje: ${porcentaje}%\nEdad Correspondiente: ${edadCorr}`);
         location.reload();
-    })
-    .catch(error => console.error('Error:', error));
+    });
 }
 </script>
+
 </body>
 </html>
