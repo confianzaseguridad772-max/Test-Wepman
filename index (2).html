@@ -2,291 +2,105 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeoBoy Castillo Grande - Monitor Pro</title>
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <title>Test de Wepman Virtual</title>
     <style>
-        :root {
-            --primary: #2563eb;
-            --danger: #ef4444;
-            --success: #22c55e;
-            --warning: #f97316;
-            --glass: rgba(255, 255, 255, 0.95);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: #f0f2f5; overflow: hidden; }
-        #map { height: 100vh; width: 100%; z-index: 1; }
-
-        /* Panel Lateral Retráctil */
-        .search-panel {
-            position: absolute; top: 0; left: 0; bottom: 0; z-index: 1010;
-            background: var(--glass); backdrop-filter: blur(15px);
-            padding: 24px; width: 310px;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow); overflow-y: auto;
-            border-right: 1px solid rgba(0,0,0,0.1);
-        }
-        .search-panel.hidden { transform: translateX(-100%); }
-
-        .toggle-btn {
-            position: absolute; top: 15px; left: 15px; z-index: 1020;
-            background: var(--primary); color: white;
-            border: none; width: 45px; height: 45px; border-radius: 12px;
-            cursor: pointer; box-shadow: var(--shadow);
-            display: flex; align-items: center; justify-content: center;
-            transition: left 0.3s ease;
-        }
-        .search-panel:not(.hidden) + .toggle-btn { left: 325px; }
-
-        h2 { margin: 0 0 20px 0; font-size: 1.25rem; color: #1e293b; font-weight: 600; display: flex; align-items: center; gap: 12px; }
-        label { font-size: 0.7rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        .search-input {
-            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;
-            margin-bottom: 15px; font-family: inherit; font-size: 0.9rem; box-sizing: border-box;
-        }
-
-        .filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
-        .btn-quick {
-            padding: 10px 5px; font-size: 0.65rem; border-radius: 8px; border: 1px solid #e2e8f0;
-            background: white; cursor: pointer; font-weight: 700; color: #475569;
-            transition: all 0.2s; text-align: center;
-        }
-        .btn-quick.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-        .btn-filter { 
-            width: 100%; background: var(--primary); color: white; border: none; padding: 14px; 
-            border-radius: 12px; cursor: pointer; font-weight: 600; 
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-
-        /* Estilos Popups */
-        .popup-container { width: 280px; max-height: 400px; overflow-y: auto; padding: 5px; }
-        .header-vivienda { 
-            padding: 10px; background: #f8fafc; border-radius: 12px; margin-bottom: 10px; border: 1px solid #e2e8f0;
-        }
-        .header-vivienda b { color: #0f172a; display: block; font-size: 0.95rem; line-height: 1.2; }
-        .header-vivienda small { color: #64748b; font-size: 0.75rem; display: block; margin-top: 4px; }
-
-        .child-card { 
-            background: white; padding: 12px; border-radius: 12px; 
-            margin-bottom: 10px; border: 1px solid #f1f5f9;
-            position: relative; overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .child-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #cbd5e1; }
-        .child-card.anemia-alert::before { background: var(--danger); }
-        .child-card.ina-alert { border: 2px solid var(--warning); }
-
-        .status-badge { 
-            margin-top: 8px; padding: 6px 8px; border-radius: 6px;
-            font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; gap: 6px;
-        }
-        .bg-red { background: #fef2f2; color: var(--danger); border: 1px solid #fee2e2; }
-        .bg-orange { background: #fff7ed; color: var(--warning); border: 1px solid #ffedd5; width: 100%; box-sizing: border-box; display: block !important; }
-        
-        .info-row { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: #64748b; margin-top: 2px; }
+        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background-color: #f4f4f9; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .item { margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #eee; }
+        .hidden { display: none; }
+        button { background: #4CAF50; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
     </style>
 </head>
 <body>
 
-<div class="search-panel" id="sidePanel">
-    <h2><i class="fas fa-satellite-dish" style="color:var(--primary)"></i> GeoBoy Pro</h2>
+<div class="card" id="form-container">
+    <h2>Registro del Niño</h2>
+    <input type="text" id="dni" placeholder="DNI" required><br><br>
+    <input type="text" id="nombre" placeholder="Nombre completo" size="30" required><br><br>
+    <label>Edad:</label>
+    <select id="edad_cron">
+        <option value="3">3 años</option>
+        <option value="4">4 años</option>
+        <option value="5">5 años</option>
+    </select>
+    <hr>
+    <h3>Instrucciones</h3>
+    <p>Se dirán los pares de palabras. Marque "Igual" o "Diferente" según responda el niño.</p>
     
-    <label>Buscador (DNI / Nombres)</label>
-    <input type="text" id="mainSearch" class="search-input" placeholder="Buscar niño, madre o DNI..." oninput="applyFilters()">
-
-    <label>Filtrar por Inasistencia</label>
-    <div class="filter-grid">
-        <button class="btn-quick" id="btn-anemia" onclick="toggleFilter('anemia')">INAS. ANEMIA</button>
-        <button class="btn-quick" id="btn-cred" onclick="toggleFilter('cred')">INAS. CRED</button>
-        <button class="btn-quick" id="btn-vacuna" onclick="toggleFilter('vacuna')">INAS. VACUNA</button>
-        <button class="btn-quick" onclick="resetFilters()" style="background:#f1f5f9">LIMPIAR</button>
+    <div id="test-items">
+        <!-- Los 40 items se generan aquí -->
     </div>
 
-    <label>Rango de Nacimiento</label>
-    <div style="display: flex; gap: 5px;">
-        <input type="date" id="dateStart" class="search-input" onchange="applyFilters()">
-        <input type="date" id="dateEnd" class="search-input" onchange="applyFilters()">
-    </div>
-    
-    <button class="btn-filter" onclick="fetchData()">
-        <i class="fas fa-sync-alt"></i> Sincronizar Excel
-    </button>
-    
-    <div id="stats" style="margin-top:15px; font-size:0.75rem; text-align:center; color:#64748b; font-weight: 600;">
-        Esperando conexión...
-    </div>
+    <button type="button" onclick="procesarResultados()">Enviar a Google Sheets</button>
 </div>
 
-<button class="toggle-btn" onclick="togglePanel()"><i class="fas fa-bars"></i></button>
-
-<div id="map"></div>
-
 <script>
-    const URL_API = "https://script.google.com/macros/s/AKfycbzQtTigeMwwQVBmcjSrrY1R2P-eE8iLinNakwlysAGCFuR3ykA69CajF1_djw2VVDza/exec"; 
+const palabras = [
+    ["SOBA", "SOGA"], ["LANA", "LANA"], ["DEDO", "DEBO"], ["RUEGA", "RUEDA"], ["CHAL", "CHAL"],
+    ["GUÍA", "DÍA"], ["BOL", "GOL"], ["SIN", "FIN"], ["PERRO", "BERRO"], ["SACO", "SACO"],
+    ["ZONA", "ZONA"], ["JARRO", "JARRO"], ["CASA", "GASA"], ["ECO", "ECO"], ["BRAMA", "TRAMA"],
+    ["TIZA", "PIZA"], ["PITO", "PICO"], ["CANA", "CAMA"], ["CUBO", "TUBO"], ["FIEL", "PIEL"],
+    ["MAPA", "MATA"], ["BEBE", "BEBE"], ["CARGO", "CARDO"], ["PARCO", "PARTO"], ["BULBO", "BULTO"],
+    ["MIDO", "NIDO"], ["CLAN", "PLAN"], ["TIFÓN", "TIZÓN"], ["CRUZ", "CRUZ"], ["DIEZ", "DIEZ"],
+    ["POBRE", "COBRE"], ["TROTE", "BROTE"], ["BRASA", "GRASA"], ["TORO", "TORO"], ["PAN", "PAN"],
+    ["ARCÓN", "HALCÓN"], ["PLAN", "FLAN"], ["FLOR", "FLOR"], ["ROPA", "ROBA"], ["CRIO", "TRIO"]
+];
+
+const container = document.getElementById('test-items');
+
+// Generar preguntas
+palabras.forEach((par, index) => {
+    const esIgual = par[0] === par[1];
+    container.innerHTML += `
+        <div class="item">
+            <p>${index + 1}. <strong>${par[0]} - ${par[1]}</strong></p>
+            <label><input type="radio" name="p${index}" value="${esIgual ? 'Y' : 'X'}"> Igual</label>
+            <label><input type="radio" name="p${index}" value="${!esIgual ? 'Y' : 'X'}"> Diferente</label>
+        </div>
+    `;
+});
+
+function calcularEdadCorr(porcentaje) {
+    if (porcentaje >= 91) return "5.7 - 6.0 años";
+    if (porcentaje >= 81) return "5.1 - 5.6 años";
+    if (porcentaje >= 71) return "4.7 - 5.0 años";
+    if (porcentaje >= 61) return "4.1 - 4.6 años";
+    if (porcentaje >= 51) return "3.7 - 4.0 años";
+    if (porcentaje >= 41) return "3.0 - 3.6 años";
+    return "Menos de 3.0 años";
+}
+
+function procesarResultados() {
+    let aciertos = 0;
+    palabras.forEach((_, i) => {
+        const selected = document.querySelector(`input[name="p${i}"]:checked`);
+        if (selected && selected.value === 'Y') aciertos++;
+    });
+
+    const porcentaje = (aciertos / 40) * 100;
+    const edad_corr = calcularEdadCorr(porcentaje);
     
-    const map = L.map('map', { center: [-9.2938, -75.9926], zoom: 15, zoomControl: false });
-    L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}').addTo(map);
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
+    const datos = {
+        dni: document.getElementById('dni').value,
+        nombre: document.getElementById('nombre').value,
+        edad_cron: document.getElementById('edad_cron').value,
+        porcentaje: porcentaje,
+        edad_corr: edad_corr
+    };
 
-    let markersLayer = L.layerGroup().addTo(map);
-    let rawData = [];
-    let activeFilters = { anemia: false, cred: false, vacuna: false };
+    // REEMPLAZA ESTA URL con la de tu implementación de Google Apps Script
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbyu1LrMhPlMk71hRVDopMfE521slDYp6OxKq-655auTeJoviYAObUL-jMTtGJqht9K9HQ/exec";
 
-    function togglePanel() { document.getElementById('sidePanel').classList.toggle('hidden'); }
-
-    function parseDate(val) {
-        if (!val || String(val).includes("#") || String(val).trim() === "" || val === 0 || val === "0") return null;
-        if (!isNaN(val) && typeof val === 'number') return new Date((val - 25569) * 86400 * 1000);
-        let s = String(val).trim();
-        let parts = s.split(/[\/\-]/);
-        if (parts.length === 3) {
-            let d, m, a;
-            if (parts[0].length === 4) { a = parseInt(parts[0]); m = parseInt(parts[1]) - 1; d = parseInt(parts[2]); }
-            else { d = parseInt(parts[0]); m = parseInt(parts[1]) - 1; a = parseInt(parts[2]); }
-            if (a < 100) a += 2000;
-            return new Date(a, m, d, 12, 0, 0);
-        }
-        let dObj = new Date(s);
-        return isNaN(dObj.getTime()) ? null : dObj;
-    }
-
-    function calcularEdad(fechaNacStr) {
-        const f = parseDate(fechaNacStr);
-        if (!f) return "S/D";
-        const hoy = new Date();
-        let anios = hoy.getFullYear() - f.getFullYear();
-        let meses = hoy.getMonth() - f.getMonth();
-        let dias = hoy.getDate() - f.getDate();
-        if (dias < 0) { meses--; let ultDia = new Date(hoy.getFullYear(), hoy.getMonth(), 0).getDate(); dias += ultDia; }
-        if (meses < 0) { anios--; meses += 12; }
-        return `${anios > 0 ? anios + "a " : ""}${meses}m ${dias}d`;
-    }
-
-    async function fetchData() {
-        document.getElementById('stats').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sincronizando...';
-        try {
-            const response = await fetch(URL_API);
-            rawData = await response.json();
-            applyFilters();
-        } catch (e) { document.getElementById('stats').innerText = "Error de conexión."; }
-    }
-
-    function toggleFilter(type) {
-        activeFilters[type] = !activeFilters[type];
-        document.getElementById('btn-' + type).classList.toggle('active');
-        applyFilters();
-    }
-
-    function resetFilters() {
-        activeFilters = { anemia: false, cred: false, vacuna: false };
-        document.querySelectorAll('.btn-quick').forEach(b => b.classList.remove('active'));
-        document.getElementById('mainSearch').value = '';
-        document.getElementById('dateStart').value = '';
-        document.getElementById('dateEnd').value = '';
-        applyFilters();
-    }
-
-    function applyFilters() {
-        markersLayer.clearLayers();
-        const term = document.getElementById('mainSearch').value.toLowerCase().trim();
-        const dStart = document.getElementById('dateStart').value ? new Date(document.getElementById('dateStart').value + "T00:00:00") : null;
-        const dEnd = document.getElementById('dateEnd').value ? new Date(document.getElementById('dateEnd').value + "T23:59:59") : null;
-
-        const grupos = {};
-        let contadorNiños = 0;
-
-        rawData.forEach(item => {
-            const fNac = parseDate(item.nacimientoHijo);
-            if (dStart && fNac && fNac < dStart) return;
-            if (dEnd && fNac && fNac > dEnd) return;
-
-            const matchSearch = !term || 
-                String(item.dniHijo).includes(term) || 
-                item.nombreHijo.toLowerCase().includes(term) || 
-                item.nombreMadre.toLowerCase().includes(term);
-            if (!matchSearch) return;
-
-            // FILTROS INDIVIDUALES POR TIPO DE INASISTENCIA
-            if (activeFilters.anemia && !item.citaFaltante) return;
-            if (activeFilters.cred && !item.citaCred) return; 
-            if (activeFilters.vacuna && !item.citaVacuna) return;
-
-            if (!grupos[item.coords]) grupos[item.coords] = [];
-            grupos[item.coords].push(item);
-            contadorNiños++;
-        });
-
-        for (const coord in grupos) {
-            const personas = grupos[coord];
-            const latlng = coord.split(",").map(Number);
-            
-            const tieneAlerta = personas.some(p => {
-                const esAnemicoReal = p.anemia && String(p.anemia).trim() !== "" && String(p.anemia).trim() !== "0" && !String(p.anemia).includes("#");
-                return esAnemicoReal || p.citaFaltante || p.citaCred || p.citaVacuna;
-            });
-
-            let html = `<div class="popup-container">
-                <div class="header-vivienda">
-                    <small>RESPONSABLE</small>
-                    <b>${personas[0].nombreMadre}</b>
-                    <div class="info-row"><i class="fas fa-phone"></i> Cel: ${personas[0].celular || 'S/N'}</div>
-                    <div class="info-row"><i class="fas fa-home"></i> ${personas[0].domicilio || 'S/D'}</div>
-                </div>`;
-
-            personas.forEach(p => {
-                const esAnemico = p.anemia && String(p.anemia).trim() !== "" && String(p.anemia).trim() !== "0" && !String(p.anemia).includes("#");
-                
-                let badgesHtml = "";
-                
-                // Badge de Anemia Activa
-                if (esAnemico) {
-                    const fDiag = parseDate(p.anemia);
-                    let alta = "";
-                    if (fDiag) {
-                        let fAlta = new Date(fDiag); fAlta.setMonth(fAlta.getMonth() + 7);
-                        alta = `<br><span style="font-size:0.65rem; font-weight:400">📅 Alta: ${fAlta.toLocaleDateString('es-PE')}</span>`;
-                    }
-                    badgesHtml += `<div class="status-badge bg-red"><i class="fas fa-tint"></i> ANEMIA (${p.anemia})${alta}</div>`;
-                }
-
-                // Badge Inasistente Anemia (Hoja InaAnemia)
-                if (p.citaFaltante) {
-                    badgesHtml += `<div class="status-badge bg-orange"><i class="fas fa-calendar-times"></i> <b>INASISTENTE ANEMIA</b><br>Cita: ${p.citaFaltante}</div>`;
-                }
-
-                // Badge Inasistente CRED (Hoja InaCRED)
-                if (p.citaCred) {
-                    badgesHtml += `<div class="status-badge bg-orange" style="border-color:#3b82f6"><i class="fas fa-baby"></i> <b>INASISTENTE CRED</b><br>Cita: ${p.citaCred}</div>`;
-                }
-
-                // Badge Inasistente VACUNA (Hoja InaVacunas)
-                if (p.citaVacuna) {
-                    badgesHtml += `<div class="status-badge bg-orange" style="border-color:#22c55e"><i class="fas fa-syringe"></i> <b>INASISTENTE VACUNA</b><br>Cita: ${p.citaVacuna}</div>`;
-                }
-
-                html += `<div class="child-card ${esAnemico ? 'anemia-alert' : ''} ${(p.citaFaltante || p.citaCred || p.citaVacuna) ? 'ina-alert' : ''}">
-                    <span style="font-weight:600; color:#1e293b">👶 ${p.nombreHijo}</span><br>
-                    <div class="info-row">DNI: ${p.dniHijo} | ${calcularEdad(p.nacimientoHijo)}</div>
-                    ${badgesHtml}
-                </div>`;
-            });
-
-            L.marker(latlng, { icon: new L.Icon({
-                iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${tieneAlerta ? 'red' : 'blue'}.png`,
-                iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-            })}).bindPopup(html + "</div>").addTo(markersLayer);
-        }
-        document.getElementById('stats').innerText = `${contadorNiños} niños encontrados.`;
-    }
-    fetchData();
+    fetch(URL_SCRIPT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(datos)
+    }).then(() => {
+        alert("Datos enviados con éxito.\nResultado: " + porcentaje + "%\nEdad: " + edad_corr);
+    });
+}
 </script>
+
 </body>
 </html>
