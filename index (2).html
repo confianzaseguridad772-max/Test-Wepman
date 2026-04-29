@@ -2,40 +2,61 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test de Wepman Virtual</title>
     <style>
-        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background-color: #f4f4f9; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .item { margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #eee; }
-        .hidden { display: none; }
-        button { background: #4CAF50; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; line-height: 1.6; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1, h2 { color: #2c3e50; text-align: center; }
+        .info-section { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; background: #eef2f7; padding: 20px; border-radius: 8px; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; transition: background 0.2s; }
+        .item:hover { background-color: #f9f9f9; }
+        .words { font-weight: bold; font-size: 1.1em; color: #444; flex: 1; }
+        .options { flex: 1; text-align: right; }
+        .btn-submit { display: block; width: 100%; padding: 15px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; margin-top: 30px; }
+        .btn-submit:hover { background-color: #219150; }
+        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 90%; }
+        .consigna { font-style: italic; background: #fff3cd; padding: 10px; border-left: 5px solid #ffecb5; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-<div class="card" id="form-container">
-    <h2>Registro del Niño</h2>
-    <input type="text" id="dni" placeholder="DNI" required><br><br>
-    <input type="text" id="nombre" placeholder="Nombre completo" size="30" required><br><br>
-    <label>Edad:</label>
-    <select id="edad_cron">
-        <option value="3">3 años</option>
-        <option value="4">4 años</option>
-        <option value="5">5 años</option>
-    </select>
-    <hr>
-    <h3>Instrucciones</h3>
-    <p>Se dirán los pares de palabras. Marque "Igual" o "Diferente" según responda el niño.</p>
+<div class="container">
+    <h1>Test de Discriminación Auditiva (Wepman)</h1>
     
-    <div id="test-items">
-        <!-- Los 40 items se generan aquí -->
+    <div class="info-section">
+        <div>
+            <label>DNI del Niño:</label><br>
+            <input type="text" id="dni" required>
+        </div>
+        <div>
+            <label>Nombre del Niño:</label><br>
+            <input type="text" id="nombre" required>
+        </div>
+        <div>
+            <label>Edad Cronológica:</label><br>
+            <select id="edad_cron">
+                <option value="3">3 años</option>
+                <option value="4">4 años</option>
+                <option value="5">5 años</option>
+            </select>
+        </div>
     </div>
 
-    <button type="button" onclick="procesarResultados()">Enviar a Google Sheets</button>
+    <div class="consigna">
+        <strong>Consigna:</strong> "Te voy a leer algunas palabras y tú me dirás si las oyes igual o diferente."
+    </div>
+
+    <div id="test-content">
+        <!-- Generado por JS -->
+    </div>
+
+    <button class="btn-submit" onclick="enviarDatos()">Finalizar y Enviar a Google Sheets</button>
 </div>
 
 <script>
-const palabras = [
+// Listado oficial del PDF
+const pares = [
     ["SOBA", "SOGA"], ["LANA", "LANA"], ["DEDO", "DEBO"], ["RUEGA", "RUEDA"], ["CHAL", "CHAL"],
     ["GUÍA", "DÍA"], ["BOL", "GOL"], ["SIN", "FIN"], ["PERRO", "BERRO"], ["SACO", "SACO"],
     ["ZONA", "ZONA"], ["JARRO", "JARRO"], ["CASA", "GASA"], ["ECO", "ECO"], ["BRAMA", "TRAMA"],
@@ -46,61 +67,72 @@ const palabras = [
     ["ARCÓN", "HALCÓN"], ["PLAN", "FLAN"], ["FLOR", "FLOR"], ["ROPA", "ROBA"], ["CRIO", "TRIO"]
 ];
 
-const container = document.getElementById('test-items');
+const testContainer = document.getElementById('test-content');
 
-// Generar preguntas
-palabras.forEach((par, index) => {
-    const esIgual = par[0] === par[1];
-    container.innerHTML += `
+// Crear los 40 campos
+pares.forEach((par, i) => {
+    const esIgualReal = par[0] === par[1];
+    testContainer.innerHTML += `
         <div class="item">
-            <p>${index + 1}. <strong>${par[0]} - ${par[1]}</strong></p>
-            <label><input type="radio" name="p${index}" value="${esIgual ? 'Y' : 'X'}"> Igual</label>
-            <label><input type="radio" name="p${index}" value="${!esIgual ? 'Y' : 'X'}"> Diferente</label>
+            <span class="words">${i + 1}. ${par[0]} - ${par[1]}</span>
+            <div class="options">
+                <label><input type="radio" name="r${i}" value="${esIgualReal ? '1' : '0'}"> Igual</label>
+                <label><input type="radio" name="r${i}" value="${!esIgualReal ? '1' : '0'}"> Diferente</label>
+            </div>
         </div>
     `;
 });
 
-function calcularEdadCorr(porcentaje) {
-    if (porcentaje >= 91) return "5.7 - 6.0 años";
-    if (porcentaje >= 81) return "5.1 - 5.6 años";
-    if (porcentaje >= 71) return "4.7 - 5.0 años";
-    if (porcentaje >= 61) return "4.1 - 4.6 años";
-    if (porcentaje >= 51) return "3.7 - 4.0 años";
-    if (porcentaje >= 41) return "3.0 - 3.6 años";
-    return "Menos de 3.0 años";
+function obtenerEdadCorrespondiente(p) {
+    // Escala basada en la tabla del protocolo[cite: 1]
+    if (p >= 91) return "5.7 - 6.0 años";
+    if (p >= 81) return "5.1 - 5.6 años";
+    if (p >= 71) return "4.7 - 5.0 años";
+    if (p >= 61) return "4.1 - 4.6 años";
+    if (p >= 51) return "3.7 - 4.0 años";
+    if (p >= 41) return "3.0 - 3.6 años";
+    return "Menor a 3.0 años";
 }
 
-function procesarResultados() {
+function enviarDatos() {
     let aciertos = 0;
-    palabras.forEach((_, i) => {
-        const selected = document.querySelector(`input[name="p${i}"]:checked`);
-        if (selected && selected.value === 'Y') aciertos++;
-    });
+    const totalItems = 40;
 
-    const porcentaje = (aciertos / 40) * 100;
-    const edad_corr = calcularEdadCorr(porcentaje);
+    for (let i = 0; i < totalItems; i++) {
+        const check = document.querySelector(`input[name="r${i}"]:checked`);
+        if (check && check.value === "1") aciertos++;
+    }
+
+    const porcentaje = (aciertos / totalItems) * 100;[cite: 1]
+    const edadCorr = obtenerEdadCorrespondiente(porcentaje);
     
-    const datos = {
+    const payload = {
         dni: document.getElementById('dni').value,
         nombre: document.getElementById('nombre').value,
         edad_cron: document.getElementById('edad_cron').value,
-        porcentaje: porcentaje,
-        edad_corr: edad_corr
+        porcentaje: porcentaje.toFixed(1),
+        edad_corr: edadCorr
     };
 
-    // REEMPLAZA ESTA URL con la de tu implementación de Google Apps Script
-    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbyAZPuQ8QxLtXAtGpF4hvWEuKrlCFWxgls8dC5VhSVAB31uINSJVknPD2ujWkVAxBauEQ/exec";
+    if (!payload.dni || !payload.nombre) {
+        alert("Por favor, completa los datos del niño.");
+        return;
+    }
 
-    fetch(URL_SCRIPT, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(datos)
-    }).then(() => {
-        alert("Datos enviados con éxito.\nResultado: " + porcentaje + "%\nEdad: " + edad_corr);
-    });
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyAZPuQ8QxLtXAtGpF4hvWEuKrlCFWxgls8dC5VhSVAB31uINSJVknPD2ujWkVAxBauEQ/exec';
+
+    fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(payload)
+    })
+    .then(() => {
+        alert(`¡Test Enviado!\nResultado: ${porcentaje}%\nEdad Correspondiente: ${edadCorr}`);
+        location.reload();
+    })
+    .catch(error => console.error('Error:', error));
 }
 </script>
-
 </body>
 </html>
